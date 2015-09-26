@@ -1,9 +1,29 @@
 var CommentBox = React.createClass({
+  loadCommentsFromServer: function() {
+    $.ajax({
+      url: this.props.url,
+      dataType: 'json',
+      cache: false,
+      success: function(data) {
+        this.setState({data: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
+  getInitialState: function() {
+    return {data: []};
+  },
+  componentDidMount: function() {
+    this.loadCommentsFromServer();
+    setInterval(this.loadCommentsFromServer, this.props.pollInterval);
+  },
   render: function() {
     return (
       <div className="commentBox">
         <h1>comments</h1>
-        <CommentList data={this.props.data} />
+        <CommentList data={this.state.data} />
         <CommentForm />
       </div>
     );
@@ -31,8 +51,10 @@ var CommentForm = React.createClass({
   render: function() {
     return (
       <div className="commentForm">
-        Hello, world, I am a Comment Form!
-      </div>
+        <input type="text" placeholder="your name" />
+        <input type="text" placeholder="your comment..." />
+        <input type="submit" value="post" />
+      </form>
     );
   }
 });
@@ -56,6 +78,6 @@ var Comment = React.createClass({
 });
 
 React.render(
-  <CommentBox url="/api/comments" />,
+  <CommentBox url="/api/comments" pollInterval={2000} />,
   document.getElementById('content')
 );
