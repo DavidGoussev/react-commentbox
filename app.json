@@ -1,0 +1,11 @@
+{
+  "name": "dpg5000_react commentbox",
+  "description": "comment box, made withreact.js",
+  "keywords": [ "react", "reactjs", "basics" ],
+  "repository": "https://github.com/dpg5000",
+  "website": "https://github.com/dpg5000",
+  "success_url": "/",
+  "env" : {
+    "BUILDPACK_URL": "https://github.com/heroku/heroku-buildpack-nodejs.git"
+  }
+}
